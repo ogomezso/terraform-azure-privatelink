@@ -1,0 +1,7 @@
+terraform.tfstate
+terraform.tfstate.backup
+terraform.tfvars
+tf.plan
+.terraform
+.terraform.lock.hcl
+azure_client
