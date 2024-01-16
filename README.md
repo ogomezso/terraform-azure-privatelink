@@ -1,53 +1,70 @@
-### Notes
+<!-- BEGIN_TF_DOCS -->
+## Requirements
 
-1. See [Sample Project for Confluent Terraform Provider](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs/guides/sample-project) that provides step-by-step instructions of running this example.
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 2.55.0 |
+| <a name="requirement_confluent"></a> [confluent](#requirement\_confluent) | >=1.51.0 |
 
-2. This example assumes that Terraform is run from a host in the private network (you could also leverage the ["Agent" Execution Mode](https://developer.hashicorp.com/terraform/cloud-docs/agents) if you are using Terraform Enterprise), where it will have connectivity to the [Kafka REST API](https://docs.confluent.io/cloud/current/api.html#tag/Topic-(v3)) in other words, to the [REST endpoint](https://docs.confluent.io/cloud/current/clusters/broker-config.html#access-cluster-settings-in-the-ccloud-console) on the provisioned Kafka cluster. If it is not, you must make these changes:
+## Providers
 
+| Name | Version |
+|------|---------|
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.47.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 2.55.0 |
+| <a name="provider_confluent"></a> [confluent](#provider\_confluent) | 1.59.0 |
 
-    * Update the `confluent_api_key` resources by setting their `disable_wait_for_ready` flag to `true`. Otherwise, Terraform will attempt to validate API key creation by listing topics, which will fail without access to the Kafka REST API. Otherwise, you might see errors like:
+## Modules
 
-        ```
-        Error: error waiting for Kafka API Key "[REDACTED]" to sync: error listing Kafka Topics using Kafka API Key "[REDACTED]": Get "[https://[REDACTED]/kafka/v3/clusters/[REDACTED]/topics](https://[REDACTED]/kafka/v3/clusters/[REDACTED]/topics)": GET [https://[REDACTED]/kafka/v3/clusters/[REDACTED]/topics](https://[REDACTED]/kafka/v3/clusters/[REDACTED]/topics) giving up after 5 attempt(s): Get "[https://[REDACTED]/kafka/v3/clusters/[REDACTED]/topics](https://[REDACTED]/kafka/v3/clusters/[REDACTED/topics)": dial tcp [REDACTED]:443: i/o timeout
-        ```
+No modules.
 
-    * Remove the `confluent_kafka_topic` resource. These resources are provisioned using the Kafka REST API, which is only accessible from the private network.
+## Resources
 
-3. If you run into
+| Name | Type |
+|------|------|
+| [azuread_service_principal.main](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/service_principal) | resource |
+| [azurerm_key_vault.main](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault) | resource |
+| [azurerm_key_vault_key.main](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/key_vault_key) | resource |
+| [azurerm_private_dns_a_record.rr](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
+| [azurerm_private_dns_a_record.zonal](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_a_record) | resource |
+| [azurerm_private_dns_zone.hz](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone) | resource |
+| [azurerm_private_dns_zone_virtual_network_link.hz](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone_virtual_network_link) | resource |
+| [azurerm_private_endpoint.endpoint](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_endpoint) | resource |
+| [azurerm_role_assignment.administrator_assignment](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.encryption_user_role_assignment](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.reader_role_assignment](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [confluent_api_key.app-manager-kafka-api-key](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs/resources/api_key) | resource |
+| [confluent_byok_key.main](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs/resources/byok_key) | resource |
+| [confluent_environment.env](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs/resources/environment) | resource |
+| [confluent_kafka_cluster.dedicated](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs/resources/kafka_cluster) | resource |
+| [confluent_network.private-link](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs/resources/network) | resource |
+| [confluent_private_link_access.azure](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs/resources/private_link_access) | resource |
+| [confluent_role_binding.app-manager-kafka-cluster-admin](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs/resources/role_binding) | resource |
+| [confluent_schema_registry_cluster.advanced](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs/resources/schema_registry_cluster) | resource |
+| [confluent_service_account.app-manager](https://registry.terraform.io/providers/confluentinc/confluent/latest/docs/resources/service_account) | resource |
+| [azuread_service_principal.current](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) | data source |
+| [azurerm_client_config.current](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/client_config) | data source |
+| [azurerm_resource_group.rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/resource_group) | data source |
+| [azurerm_subnet.subnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/subnet) | data source |
+| [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/virtual_network) | data source |
 
-    ```
-    Error: Invalid function argument
-    
-      on main.tf line 249, in locals:
-     249:   ]) > 0 ? file("\n\nerror: private link endpoint network policies must be disabled https://docs.microsoft.com/en-us/azure/private-link/disable-private-endpoint-network-policy") : ""
-    
-    Invalid value for "path" parameter: no file exists at
-    
-    error: private link endpoint network policies must be disabled
-    https:/docs.microsoft.com/en-us/azure/private-link/disable-private-endpoint-network-policy;
-    this function works only with files that are distributed as part of the
-    configuration source code, so if this file will be created by a resource in
-    this configuration you must instead obtain this result from an attribute of
-    that resource.
-    ```
+## Inputs
 
-    You may need to run the following command:
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_client_id"></a> [client\_id](#input\_client\_id) | The ID of the Client on Azure | `string` | n/a | yes |
+| <a name="input_client_secret"></a> [client\_secret](#input\_client\_secret) | The Secret of the Client on Azure | `string` | n/a | yes |
+| <a name="input_region"></a> [region](#input\_region) | The region of your VNet | `string` | n/a | yes |
+| <a name="input_resource_group"></a> [resource\_group](#input\_resource\_group) | The name of the Azure Resource Group that the virtual network belongs to | `string` | n/a | yes |
+| <a name="input_subnet_name_by_zone"></a> [subnet\_name\_by\_zone](#input\_subnet\_name\_by\_zone) | A map of Zone to Subnet Name | `map(string)` | n/a | yes |
+| <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id) | The Azure subscription ID to enable for the Private Link Access where your VNet exists | `string` | n/a | yes |
+| <a name="input_tenant_id"></a> [tenant\_id](#input\_tenant\_id) | The Azure tenant ID in which Subscription exists | `string` | n/a | yes |
+| <a name="input_vnet_name"></a> [vnet\_name](#input\_vnet\_name) | The name of your VNet that you want to connect to Confluent Cloud Cluster | `string` | n/a | yes |
 
-    ```
-    az network vnet subnet update \
-      --disable-private-endpoint-network-policies true \
-      --name default \
-      --resource-group myResourceGroup \
-      --vnet-name myVirtualNetwork
-    ```
-    For more information, see [Disable network policy](https://docs.microsoft.com/en-us/azure/private-link/disable-private-endpoint-network-policy).
+## Outputs
 
-4. One common deployment workflow for environments with private networking is as follows:
-
-    * A initial (centrally-run) Terraform deployment provisions infrastructure: network, Kafka cluster, and other resources on cloud provider of your choice to setup private network connectivity (like DNS records)
-
-    * A secondary Terraform deployment (run from within the private network) provisions data-plane resources (Kafka Topics and ACLs)
-
-    * Note that RBAC role bindings can be provisioned in either the first or second step, as they are provisioned through the [Confluent Cloud API](https://docs.confluent.io/cloud/current/api.html), not the [Kafka REST API](https://docs.confluent.io/cloud/current/api.html#tag/Topic-(v3))
-
-5. See [Use Azure Private Link](https://docs.confluent.io/cloud/current/networking/private-links/azure-privatelink.html) for more details.
+| Name | Description |
+|------|-------------|
+| <a name="output_resource-ids"></a> [resource-ids](#output\_resource-ids) | n/a |
+<!-- END_TF_DOCS -->
